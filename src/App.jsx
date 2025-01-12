@@ -1,33 +1,62 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// src/App.jsx
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Welcome from './pages/Welcome';
 import Profile from './pages/Profile';
 import NavBar from './components/NavBar';
 
+function RequireAuth({ children, isAuthenticated }) {
+  const location = useLocation();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} />;
+  }
+  return children;
+}
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    if (token) {
-      setIsAuthenticated(true);
-    }
+    setIsAuthenticated(!!token);
   }, []);
 
-  const logout = useCallback(() => {
+  const handleLogin = (token) => {
+    localStorage.setItem('authToken', token);
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
     setIsAuthenticated(false);
-  }, []);
+  };
 
   return (
     <Router>
-      {isAuthenticated && <NavBar logout={logout} />}
+      {isAuthenticated && <NavBar logout={handleLogout} />}
       <Routes>
-        <Route path="/" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/welcome" element={<Welcome />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/" element={<Navigate to={isAuthenticated ? "/welcome" : "/login"} />} />
+        <Route path="/login" element={isAuthenticated ? <Navigate to="/welcome" /> : <Login onLogin={handleLogin} />} />
+        <Route path="/register" element={isAuthenticated ? <Navigate to="/welcome" /> : <Register />} />
+        <Route
+          path="/welcome"
+          element={
+            <RequireAuth isAuthenticated={isAuthenticated}>
+              <Welcome />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth isAuthenticated={isAuthenticated}>
+              <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route path="*" element={<Navigate to={isAuthenticated ? "/welcome" : "/login"} />} />
       </Routes>
     </Router>
   );
