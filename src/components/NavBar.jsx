@@ -1,59 +1,23 @@
-import React from "react";
-import { Link } from "react-router-dom";
+// src/components/NavBar.jsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/NavBar.css';
 
 const NavBar = ({ logout }) => {
   return (
-    <nav style={styles.nav}>
-      <ul style={styles.navList}>
-        <li style={styles.navItem}>
-          <Link to="/welcome" style={styles.link}>
-            Welcome
-          </Link>
-        </li>
-        <li style={styles.navItem}>
-          <Link to="/my-info" style={styles.link}>
-            My Info
-          </Link>
-        </li>
-        <li style={styles.navItem}>
-          <button onClick={logout} style={styles.logoutButton}>
-            Logout
-          </button>
-        </li>
-      </ul>
+    <nav className="navbar">
+      <div className="navbar-logo">
+        <Link to="/">AI Financial Planner</Link>
+      </div>
+      <div className="navbar-links">
+        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/profile">Profile</Link>
+        <button className="navbar-button" onClick={logout}>
+          Logout
+        </button>
+      </div>
     </nav>
   );
-};
-
-const styles = {
-  nav: {
-    background: "#333",
-    color: "#fff",
-    padding: "10px",
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  navList: {
-    listStyle: "none",
-    margin: 0,
-    padding: 0,
-    display: "flex",
-    alignItems: "center",
-  },
-  navItem: {
-    margin: "0 10px",
-  },
-  link: {
-    color: "#fff",
-    textDecoration: "none",
-  },
-  logoutButton: {
-    background: "transparent",
-    border: "1px solid #fff",
-    color: "#fff",
-    padding: "5px 10px",
-    cursor: "pointer",
-  },
 };
 
 export default NavBar;

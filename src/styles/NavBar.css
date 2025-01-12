@@ -1,0 +1,65 @@
+/* src/components/NavBar.css */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    box-sizing: border-box;
+  }
+  
+  .navbar-logo {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  
+  .navbar-logo a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .navbar-logo a:hover {
+    text-decoration: underline;
+  }
+  
+  .navbar-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  
+  .navbar-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    white-space: nowrap; /* Prevents text wrapping */
+  }
+  
+  .navbar-links a:hover {
+    text-decoration: underline;
+  }
+  
+  .navbar-button {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1em;
+    white-space: nowrap; /* Prevents text wrapping */
+  }
+  
+  .navbar-button:hover {
+    background-color: #777;
+  }
+  
