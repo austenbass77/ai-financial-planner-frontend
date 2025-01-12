@@ -5,11 +5,8 @@ import '../styles/Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
     email: '',
     password: '',
-    phone: '',
   });
 
   const [error, setError] = useState('');
@@ -50,26 +47,6 @@ const Register = () => {
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>First Name</label>
-          <input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Last Name</label>
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
           <label>Email</label>
           <input
             type="email"
@@ -87,15 +64,6 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
             required
-          />
-        </div>
-        <div className="form-group">
-          <label>Phone Number</label>
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
           />
         </div>
         <button type="submit">Register</button>
