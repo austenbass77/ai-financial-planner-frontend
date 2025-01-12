@@ -21,6 +21,7 @@ function App() {
   const logout = () => {
     setIsAuthenticated(false);
   };
+  console.log('Passing logout to NavBar:', logout);
 
   return (
     <Router>

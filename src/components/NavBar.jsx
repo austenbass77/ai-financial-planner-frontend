@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../styles/NavBar.css';
 
 const NavBar = ({ logout }) => {
+  console.log('Received logout prop:', logout);
   const navigate = useNavigate();
 
   const handleLogout = () => {
