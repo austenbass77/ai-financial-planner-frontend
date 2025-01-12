@@ -1,14 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+// src/pages/Welcome.jsx
+import React from 'react';
+import NavBar from '../components/NavBar';
+import '../styles/Welcome.css';
 
-const Welcome = ({ logout }) => {
+const Welcome = () => {
   return (
-    <div>
-      <h1>Welcome to the Financial Planner App!</h1>
-      <p>
-        <Link to="/my-info">Go to My Info</Link>
-      </p>
-      <button onClick={logout}>Logout</button>
+    <div className="welcome-page">
+      <NavBar />
+      <div className="welcome-container">
+        <h1>Welcome to the AI Financial Planner!</h1>
+        <p>Your personalized financial planning assistant.</p>
+      </div>
     </div>
   );
 };
