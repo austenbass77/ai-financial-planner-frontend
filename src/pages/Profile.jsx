@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Profile.css';
 
 const Profile = () => {
-  const [profile, setProfile] = useState({ email: '' });
+  const [profile, setProfile] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+  });
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem('authToken');
-      console.log('Retrieved token from localStorage:', token);
-
       if (!token) {
         setMessage('Unauthorized. Please log in.');
         return;
@@ -22,15 +24,17 @@ const Profile = () => {
           },
         });
 
-        console.log('Profile fetch response status:', response.status);
         if (response.ok) {
           const data = await response.json();
-          setProfile(data);
+          setProfile({
+            firstName: data.firstName || '',
+            lastName: data.lastName || '',
+            email: data.email || '',
+          });
         } else {
           setMessage('Failed to fetch profile. Please log in again.');
         }
       } catch (error) {
-        console.error('Error fetching profile:', error);
         setMessage('Server error. Please try again later.');
       }
     };
@@ -38,13 +42,79 @@ const Profile = () => {
     fetchProfile();
   }, []);
 
+  const handleChange = (e) => {
+    setProfile({
+      ...profile,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setMessage('Unauthorized. Please log in.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/users/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(profile),
+      });
+
+      if (response.ok) {
+        setMessage('Profile updated successfully.');
+      } else {
+        setMessage('Failed to update profile.');
+      }
+    } catch (error) {
+      setMessage('Server error. Please try again later.');
+    }
+  };
+
   return (
     <div className="profile-page">
       <h1>Profile</h1>
       {message && <p className="error-message">{message}</p>}
-      <div className="profile-info">
-        <p>Email: {profile.email}</p>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            value={profile.firstName || ''}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            value={profile.lastName || ''}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            value={profile.email || ''}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Update Profile</button>
+      </form>
     </div>
   );
 };
