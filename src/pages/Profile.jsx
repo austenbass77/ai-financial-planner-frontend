@@ -1,11 +1,8 @@
-// src/pages/Profile.jsx
 import React, { useState, useEffect } from 'react';
 import '../styles/Profile.css';
 
 const Profile = () => {
-  const [profile, setProfile] = useState({
-    email: '',
-  });
+  const [profile, setProfile] = useState({ email: '' });
   const [message, setMessage] = useState('');
 
   useEffect(() => {
