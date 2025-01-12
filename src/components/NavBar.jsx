@@ -1,18 +1,31 @@
 // src/components/NavBar.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/NavBar.css';
 
 const NavBar = ({ logout }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear the auth token from localStorage
+    localStorage.removeItem('authToken');
+
+    // Call the logout function to update state
+    logout();
+
+    // Redirect to the login page
+    navigate('/');
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <Link to="/">AI Financial Planner</Link>
+        <Link to="/welcome">AI Financial Planner</Link>
       </div>
       <div className="navbar-links">
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/profile">Profile</Link>
-        <button className="navbar-button" onClick={logout}>
+        <button className="navbar-button" onClick={handleLogout}>
           Logout
         </button>
       </div>
