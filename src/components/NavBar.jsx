@@ -1,20 +1,14 @@
-// src/components/NavBar.jsx
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../styles/NavBar.css';
+import '../styles//NavBar.css';
 
-const NavBar = ({ logout }) => {
-  console.log('Received logout prop:', logout);
+const NavBar = (props) => {
+  const { logout } = props;
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear the auth token from localStorage
     localStorage.removeItem('authToken');
-
-    // Call the logout function to update state
     logout();
-
-    // Redirect to the login page
     navigate('/');
   };
 
