@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Profile.css';
+import ChatBot from '../components/ChatBot';
 
 const Profile = () => {
   const [profile, setProfile] = useState({
@@ -115,6 +116,7 @@ const Profile = () => {
         </div>
         <button type="submit">Update Profile</button>
       </form>
+      <ChatBot />
     </div>
   );
 };
