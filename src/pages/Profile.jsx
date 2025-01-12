@@ -8,6 +8,8 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem('authToken');
+      console.log('Retrieved token from localStorage:', token);
+
       if (!token) {
         setMessage('Unauthorized. Please log in.');
         return;
@@ -20,6 +22,7 @@ const Profile = () => {
           },
         });
 
+        console.log('Profile fetch response status:', response.status);
         if (response.ok) {
           const data = await response.json();
           setProfile(data);
@@ -27,6 +30,7 @@ const Profile = () => {
           setMessage('Failed to fetch profile. Please log in again.');
         }
       } catch (error) {
+        console.error('Error fetching profile:', error);
         setMessage('Server error. Please try again later.');
       }
     };
