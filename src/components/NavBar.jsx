@@ -20,6 +20,7 @@ const NavBar = (props) => {
       <div className="navbar-links">
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/profile">Profile</Link>
+        <Link to="/family">Family</Link>
         <button className="navbar-button" onClick={handleLogout}>
           Logout
         </button>

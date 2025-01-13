@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Welcome from './pages/Welcome';
 import Profile from './pages/Profile';
+import Family from './pages/Family';
 import NavBar from './components/NavBar';
 
 function RequireAuth({ children, isAuthenticated }) {
@@ -56,6 +57,14 @@ function App() {
             </RequireAuth>
           }
         />
+        <Route
+          path="/family"
+          element={
+            <RequireAuth isAuthenticated={isAuthenticated}>
+              <Family />
+            </RequireAuth>
+          }
+        />        
         <Route path="*" element={<Navigate to={isAuthenticated ? "/welcome" : "/login"} />} />
       </Routes>
     </Router>
