@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styles/ChatBot.css';
 
 const ChatBot = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
 
@@ -49,7 +49,7 @@ const ChatBot = () => {
   return (
     <div className={`chatbot-container ${isOpen ? 'open' : ''}`}>
       <div className="chatbot-header" onClick={toggleChat}>
-        <span>{isOpen ? 'Close Chat' : 'Chat with Us!'}</span>
+        <span>{isOpen ? 'Close Chat' : 'AI Chat'}</span>
       </div>
       {isOpen && (
         <div className="chatbot-body">
