@@ -1,75 +1,62 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 
-const Login = ({ onLogin }) => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+const Login = ({ setIsAuthenticated }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const response = await fetch('http://localhost:5000/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        const data = await response.json();
-        onLogin(data.token);
-        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('token', data.token);
+        setIsAuthenticated(true);
         navigate('/welcome');
       } else {
-        const result = await response.json();
-        setError(result.message || 'Login failed');
+        setError(data.message || 'Server error. Please try again later.');
       }
     } catch (error) {
-      setError('Server error. Please try again later.');
+      setError('Network error. Please try again later.');
     }
   };
 
   return (
-    <div className="login-page">
-      <h1>Login</h1>
-      {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Email</label>
+    <div className="login-container">
+      <div className="login-box">
+        <h1>Login</h1>
+        <form onSubmit={handleSubmit}>
           <input
             type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>
-        <div className="form-group">
-          <label>Password</label>
           <input
             type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+          <button type="submit">Login</button>
+        </form>
+        {error && <p className="error-message">{error}</p>}
+      </div>
     </div>
   );
 };
