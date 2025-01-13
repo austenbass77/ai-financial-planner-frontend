@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styles/ChatBot.css';
 
 const ChatBot = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
 
