@@ -2,23 +2,20 @@ import React, { useState } from 'react';
 import '../styles/ChatBot.css';
 
 const ChatBot = () => {
-  const [messages, setMessages] = useState([
-    { text: 'Hello! How can I help you with your profile today?', sender: 'bot' },
-  ]);
-  const [input, setInput] = useState('');
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState('');
 
   const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
+    setIsOpen(!isOpen);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSendMessage  = async (e) => {
     e.preventDefault();
+    if (!inputMessage.trim()) return;
 
-    if (!input.trim()) return;
-
-    // Add user message to the chat
-    setMessages([...messages, { text: input, sender: 'user' }]);
+    const newMessage = { user: 'You', text: inputMessage };
+    setMessages([...messages, newMessage]);
 
     try {
       const token = localStorage.getItem('authToken'); // Get the token from localStorage
@@ -29,7 +26,7 @@ const ChatBot = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`, // Add the Authorization header
         },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ message: inputMessage }),
       });
 
       const data = await response.json();
@@ -50,28 +47,28 @@ const ChatBot = () => {
   };
 
   return (
-    <div className={`chat-bot-container ${isChatOpen ? 'open' : ''}`}>
-      <button className="chat-toggle-button" onClick={toggleChat}>
-        {isChatOpen ? 'Close Chat' : 'Chat with us'}
-      </button>
-      {isChatOpen && (
-        <div className="chat-bot">
-          <div className="chat-box">
+    <div className={`chatbot-container ${isOpen ? 'open' : ''}`}>
+      <div className="chatbot-header" onClick={toggleChat}>
+        <span>{isOpen ? 'Close Chat' : 'Chat with Us!'}</span>
+      </div>
+      {isOpen && (
+        <div className="chatbot-body">
+          <div className="chatbot-messages">
             {messages.map((msg, index) => (
-              <div key={index} className={`chat-message ${msg.sender}`}>
-                {msg.text}
+              <div key={index} className={`message ${msg.user === 'You' ? 'user-message' : 'bot-message'}`}>
+                <strong>{msg.user}:</strong> {msg.text}
               </div>
             ))}
           </div>
-          <form onSubmit={handleSubmit}>
+          <div className="chatbot-input">
             <input
               type="text"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
               placeholder="Type your message..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
             />
-            <button type="submit">Send</button>
-          </form>
+            <button onClick={handleSendMessage}>Send</button>
+          </div>
         </div>
       )}
     </div>
